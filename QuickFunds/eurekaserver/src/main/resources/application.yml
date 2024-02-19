@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: "eurekaserver"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+    #import: "configserver:http://localhost:8071/"
+    
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+    
+# commands for docker images
+
+# open cmd inside eurekaserver service path, 
+# mvn compile jib:dockerBuild - log out from docker desktop
+
+# push img, no need to open cmd through folder
+# docker push docker.io/ksrushti/eurekaserver:Kafka - log in to docker desktop 
+
+
+# docker-compose up -d  
+# docker-compose down
+# docker-compose stop    

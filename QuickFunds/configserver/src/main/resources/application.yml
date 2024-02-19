@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    # active: native
+    active: git
+  cloud:
+    config:
+      server:
+        # native:
+          # search-locations: "classpath:/config"
+          # search-locations: "file:///Users//microservices//Documents//config"
+          
+        git:
+          uri: "https://github.com/SSKaroshi/microservices-config.git"
+
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+encrypt:
+  key: "45D81EC1EF61DF9AD8D3E5BB397F9"
+
+server:
+  port: 8071
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+    
+# commands for docker images
+
+# open cmd inside configserver service path, 
+# mvn compile jib:dockerBuild - log out from docker desktop
+
+# push img, no need to open cmd through folder
+# docker push docker.io/ksrushti/configserver:Kafka - log in to docker desktop 
+
+
+
+# docker-compose up -d  
+# docker-compose down
+# docker-compose stop    
